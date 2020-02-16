@@ -73,10 +73,10 @@ valueBox (format (nrow(totalminoritmedia)), icon = "fa-medium")
 
 ### **Mediji na jezicima nacionalnih manjina – istraživanje i analiza** {data-height=350, align=justify}
 
-Predstavljamo vam sažeti pregled podataka prikupljenih tokom istraživanja koje je uradio konsultant Nedim Sejdinović. Podaci pokazuju da postoji trenutno `r nrow(totalminoritmedia)` medija na jezicima nacionalnih manjina čiji su osnivači nacionalni saveti nacionalnih manjina (NSNM). Sa desne strane vam je na raspolaganju mapa sa medijima gde mozete da vidite na kojim sve jezicima pružaju sadržaj i koji tip medija je u pitanju.Ispod je grafikon koji prikazuje koji manjinski jezik se najčešće koristi u ovim manjinskim medijima. I na kraju imate pretraživu tabelu sa svim podacima koji su prikupljeni. Ukoliko želite da pročitate detaljnije izveštaj možete ga naći na sledećoj **web stranici**.  
+Predstavljamo vam sažeti pregled podataka prikupljenih tokom istraživanja koje je uradio konsultant Nedim Sejdinović. Podaci pokazuju da postoji trenutno `r nrow(totalminoritmedia)` medija na jezicima nacionalnih manjina čiji su osnivači nacionalni saveti nacionalnih manjina (NSNM). Sa desne strane vam je na raspolaganju mapa sa medijima gde mozete da vidite na kojim sve jezicima pružaju medijski sadržaji i koji tip medija je u pitanju.Ispod je grafikon koji prikazuje koliko medija pokriva određeni jezik. I na kraju imate pretraživu tabelu sa svim podacima koji su prikupljeni. Ukoliko želite da pročitate detaljnije izveštaj možete ga naći na sledećoj **web stranici**.  
 
 
-### **Grafikon broja medija koji pružaju sadržaj na jeziku nacionalne manjine** {data-height=500}
+### **Grafikon prikazuje četiri jezika sa najvećim brojem medija na kojima se pruža sadržaj na tom jeziku** {data-height=500}
 ```{r}
 p <- ggplot (data = barminoritymed, aes (x = `Jezik`, y = `Broj_medija`))+
   
