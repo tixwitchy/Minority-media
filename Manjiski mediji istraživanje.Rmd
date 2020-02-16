@@ -2,7 +2,8 @@
 title: "Mediji na jezicima nacionalnih manjina – istraživanje i analiza"
 output: 
   flexdashboard::flex_dashboard:
-    runtime: shiny
+    orientation: columns
+    vertical_layout: fill
 ---
 
 ```{r setup, include=FALSE}
@@ -59,7 +60,6 @@ barminoritymed<-minoritymedia%>%
                                levels = c ("Mađarski", "Romski", "Slovački","Albanski"))
 ```
 
-
 Istraživanje
 =================================================================
 
@@ -100,7 +100,8 @@ Column {data-width=500}
 ### **Mapa sa medijima čiji su osnivači direktno ili indirektno NSNM** 
 
 ```{r}
-m<-leaflet(data =combinedlonglat) %>% 
+
+  m<-leaflet(combinedlonglat) %>% 
   addTiles()%>%
   setView(lng = 21.0059, lat = 44.0165, zoom = 7)%>%
   addAwesomeMarkers( icon = icon2, popup = ~paste(
@@ -110,9 +111,9 @@ m<-leaflet(data =combinedlonglat) %>%
   ),
   clusterOptions = markerClusterOptions()
   )
-  
 
 m
+
 ```
 
 Tabela
@@ -125,13 +126,21 @@ DT :: datatable (minoritymedia, rownames = FALSE,options = list(
   bPaginate = TRUE))
 ```
 
-Podaci
+Kontakt i podaci
 =============================================
 
 Column {data-width=1000 align=justify}
 -----------------------------------------------------------------------
+```{r, echo=FALSE}
+htmltools::img(src = "OSCE.png", 
+               alt = 'logo', 
+               style = 'position:absolute; bottom:0; left:0; padding:10px;')
+```
+Ukoliko smatrate da podaci treba da se ažuriraju slobodno kontaktirajte autora na sledeću email adresu: nedim.sejdinovic@gmail.com. 
+
+Ova stranica je napravljena uz pomoć programskog jezika R i kod za njenu izradu kao i podatke u xls i csv formatu mozete naći na sledećoj [web adresi](https://github.com/tixwitchy/Minority-media).
+
 Objavljivanje ovog istraživanja pomogla je Misija OEBS-a u Srbiji. Stavovi izraženi u ovom istraživanju pripadaju isključivo autoru i ne predstavljaju zvaničan stav Misije OEBS-a u Srbiji.
-Na ovoj stranici možete da skinete prikupljene podatke u .csv i .xlxs formatu klikom na dugme Preuzmi. Takođe, ukoliko mislite da podaci treba da se ažuriraju slobodno kontaktirajte autora na sledeću email adresu: nedim.sejdinovic@gmail.com. 
 
 
 
