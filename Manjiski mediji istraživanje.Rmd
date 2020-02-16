@@ -3,12 +3,7 @@ title: "Mediji na jezicima nacionalnih manjina – istraživanje i analiza"
 output: 
   flexdashboard::flex_dashboard:
     runtime: shiny
-    orientation: columns
-    vertical_layout: fill
 ---
-```{r global, include=FALSE}
-minoritymedia<-readxl::read_xlsx("manjinskimediji.xlsx")
-```
 
 ```{r setup, include=FALSE}
 library(flexdashboard)
@@ -135,35 +130,9 @@ Podaci
 
 Column {data-width=1000 align=justify}
 -----------------------------------------------------------------------
+Objavljivanje ovog istraživanja pomogla je Misija OEBS-a u Srbiji. Stavovi izraženi u ovom istraživanju pripadaju isključivo autoru i ne predstavljaju zvaničan stav Misije OEBS-a u Srbiji.
+Na ovoj stranici možete da skinete prikupljene podatke u .csv i .xlxs formatu klikom na dugme Preuzmi. Takođe, ukoliko mislite da podaci treba da se ažuriraju slobodno kontaktirajte autora na sledeću email adresu: nedim.sejdinovic@gmail.com. 
 
-
-```{r}
- ui<- mainPanel( p("Objavljivanje ovog istraživanja pomogla je Misija OEBS-a u Srbiji. Stavovi izraženi u ovom istraživanju pripadaju isključivo autoru i ne predstavljaju zvaničan stav Misije OEBS-a u Srbiji."),
-                 p(" Na ovoj stranici možete da skinete prikupljene podatke u .csv i .xlxs formatu klikom na dugme Preuzmi. Takođe, ukoliko mislite da podaci treba da se ažuriraju slobodno kontaktirajte autora na sledeću", a("email adresu.",href="mailto:nedim.sejdinovic@gmail.com"),align="justify"),
-                 
-   downloadButton (outputId = "downloaddatabase", label = "Preuzmi.CSV", class="butt",
-                                   tags$head(tags$style(" .butt{background-color:#0e7ceb;} .butt{color: black;} "))),
-                        
-  downloadButton ("downloaddatabase1", "Preuzmi.XLSX",class = "butt",
-                                   tags$head(tags$style(" .butt{background-color:#0e7ceb;} .butt{color: black;} "))))
-                        
-server <- function (input, output) {output$downloaddatabase <- downloadHandler (
-    filename = function(){paste("ManjinskimedijiNSNM-", Sys.Date(), ".csv",sep = "")},
-    
-    content = function(file) {
-      write.csv(minoritymedia, file)}
-    )
- output$downloaddatabase1 <- downloadHandler(
-    filename = function(){paste("ManjinskimedijiNSNM-", Sys.Date(), ".xlsx", sep = "")},
-    
-    content = function(file) {
-      write_xlsx(minoritymedia, path = file)}
-    
-  )
-}
-shinyApp(ui,server)
-
-```
 
 
 
