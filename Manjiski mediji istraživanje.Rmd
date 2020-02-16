@@ -6,7 +6,9 @@ output:
     orientation: columns
     vertical_layout: fill
 ---
-
+```{r global, include=FALSE}
+minoritymedia<-readxl::read_xlsx("manjinskimediji.xlsx")
+```
 
 ```{r setup, include=FALSE}
 library(flexdashboard)
@@ -19,8 +21,9 @@ library(htmltools)
 library(htmlwidgets)
 library(kableExtra)
 library(writexl)
-library(bootstraplib)
 library(shinyWidgets)
+library(shiny)
+library(rmarkdown)
 
 
 minoritymedia<-read_xlsx("manjinskimediji.xlsx")
@@ -61,9 +64,7 @@ barminoritymed<-minoritymedia%>%
                                levels = c ("Mađarski", "Romski", "Slovački","Albanski"))
 ```
 
-```{r global, include=FALSE}
-minoritymedia<-readxl::read_xlsx("manjinskimediji.xlsx")
-```
+
 Istraživanje
 =================================================================
 
@@ -164,5 +165,5 @@ shinyApp(ui,server)
 
 ```
 
-![](/Users/jojo/Desktop/R trainings various/Minority media/OSCE.png) 
+
 
