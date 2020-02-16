@@ -38,13 +38,11 @@ longlat<-add_row(longlat, Grad = "BARAJEVO", lng =20.4524 ,  lat= 44.6035)
 combinedlonglat<-left_join(minoritymedia,longlat,by="Grad")
 combinedlonglat[, 6:10][is.na(combinedlonglat[, 6:10])] <- " "
 
-minlat <- min(combinedlonglat$lat)
-maxlat <- max(combinedlonglat$lat)
-minlong <- min(combinedlonglat$lng)
-maxlong <- max(combinedlonglat$lng)
+
+
 combinedlonglat<-combinedlonglat%>%
   distinct(`Naziv medija`,.keep_all = TRUE)
-combinedlonglat<-na.omit(combinedlonglat)
+
 icon2<-awesomeIcons( icon="medium", library="fa", markerColor = "blue")
 
 #bar chart
@@ -57,7 +55,10 @@ barminoritymed<-minoritymedia%>%
   top_n(4)
 
  barminoritymed$`Jezik` <- factor (barminoritymed$`Jezik`,
-                               levels = c ("Mađarski", "Romski", "Slovački","Albanski"))
+  
+                                 levels = c ("Mađarski", "Romski", "Slovački","Albanski"))
+ 
+ minoritymedia1<-minoritymedia%>%select(-`URL`)
 ```
 
 Istraživanje
@@ -107,7 +108,9 @@ Column {data-width=500}
   addAwesomeMarkers( icon = icon2, popup = ~paste(
     "Naziv medija:", `Naziv medija`, "<br>","Vrsta medija:",`Vrsta medija`, "<br>",
     "Jezici:",`Jezik`,`Ostali jezici 1`,`Ostali jezici 2`,`Ostali jezici 3`,`Ostali jezici 4`,`Ostali jezici 5`,"<br>",
-    "Grad:",`Grad`,"<br>"
+    "Grad:",`Grad`,"<br>",
+    "<a href='",`URL`, "' target='_blank'>"
+                 , "Više informacija o mediju </a>","<br>"
   ),
   clusterOptions = markerClusterOptions()
   )
@@ -122,7 +125,7 @@ Tabela
 ### **Pretraživa tabela sa prikupljenim podacima o manjinskim medijima čiji su osnivači NSNM**
 
 ```{r}
-DT :: datatable (minoritymedia, rownames = FALSE,options = list(
+DT :: datatable (minoritymedia1, rownames = FALSE,options = list(
   bPaginate = TRUE))
 ```
 
@@ -141,6 +144,10 @@ Ukoliko smatrate da podaci treba da se ažuriraju slobodno kontaktirajte autora 
 Ova stranica je napravljena uz pomoć programskog jezika R i kod za njenu izradu kao i podatke u xls i csv formatu mozete naći na sledećoj [web adresi](https://github.com/tixwitchy/Minority-media).
 
 Objavljivanje ovog istraživanja pomogla je Misija OEBS-a u Srbiji. Stavovi izraženi u ovom istraživanju pripadaju isključivo autoru i ne predstavljaju zvaničan stav Misije OEBS-a u Srbiji.
+
+
+
+
 
 
 
