@@ -20,6 +20,7 @@ library(htmlwidgets)
 library(kableExtra)
 library(writexl)
 library(bootstraplib)
+library(shinyWidgets)
 
 
 minoritymedia<-read_xlsx("manjinskimediji.xlsx")
