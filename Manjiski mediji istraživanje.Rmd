@@ -1,0 +1,167 @@
+---
+title: "Mediji na jezicima nacionalnih manjina – istraživanje i analiza"
+output: 
+  flexdashboard::flex_dashboard:
+    runtime: shiny
+    orientation: columns
+    vertical_layout: fill
+---
+
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(readxl)
+library(ggplot2)
+library(plotly)
+library(leaflet)
+library(tidyverse)
+library(htmltools)
+library(htmlwidgets)
+library(kableExtra)
+library(writexl)
+library(bootstraplib)
+
+
+minoritymedia<-read_xlsx("manjinskimediji.xlsx")
+#Number of minority media
+totalminoritmedia<-minoritymedia%>%distinct(`Naziv medija`)
+nrow(totalminoritmedia)
+
+#za mapu
+longlat<-read.csv("Longitude and latitude for cities.csv")
+longlat<-longlat%>%
+  select(-X)%>%
+  rename(Grad=city)
+
+longlat<-add_row(longlat, Grad = "MAGLIĆ", lng = 19.5296,  lat= 45.3528)
+longlat<-add_row(longlat, Grad = "BARAJEVO", lng =20.4524 ,  lat= 44.6035)
+combinedlonglat<-left_join(minoritymedia,longlat,by="Grad")
+combinedlonglat[, 6:10][is.na(combinedlonglat[, 6:10])] <- " "
+
+minlat <- min(combinedlonglat$lat)
+maxlat <- max(combinedlonglat$lat)
+minlong <- min(combinedlonglat$lng)
+maxlong <- max(combinedlonglat$lng)
+combinedlonglat<-combinedlonglat%>%
+  distinct(`Naziv medija`,.keep_all = TRUE)
+combinedlonglat<-na.omit(combinedlonglat)
+icon2<-awesomeIcons( icon="medium", library="fa", markerColor = "blue")
+
+#bar chart
+
+barminoritymed<-minoritymedia%>%
+  group_by(`Jezik`)%>%
+    summarise(count=n())%>%
+    rename (Broj_medija=count) %>%
+  arrange (desc (Broj_medija)) %>%
+  top_n(4)
+
+ barminoritymed$`Jezik` <- factor (barminoritymed$`Jezik`,
+                               levels = c ("Mađarski", "Romski", "Slovački","Albanski"))
+```
+
+```{r global, include=FALSE}
+minoritymedia<-readxl::read_xlsx("manjinskimediji.xlsx")
+```
+Istraživanje
+=================================================================
+
+Column {data-width=500}
+-----------------------------------------------------------------------
+### Broj manjinskih medija-osnivači NSNM {data-height=150} 
+```{r}
+#creation of value box in upper left corner
+valueBox (format (nrow(totalminoritmedia)), icon = "fa-medium")
+```
+
+### **Mediji na jezicima nacionalnih manjina – istraživanje i analiza** {data-height=350, align=justify}
+
+Predstavljamo vam sažeti pregled podataka prikupljenih tokom istraživanja koje je uradio konsultant Nedim Sejdinović. Podaci pokazuju da postoji trenutno `r nrow(totalminoritmedia)` medija na jezicima nacionalnih manjina čiji su osnivači nacionalni saveti nacionalnih manjina (NSNM). Sa desne strane vam je na raspolaganju mapa sa medijima gde mozete da vidite na kojim sve jezicima pružaju sadržaj i koji tip medija je u pitanju.Ispod je grafikon koji prikazuje koji manjinski jezik se najčešće koristi u ovim manjinskim medijima. I na kraju imate pretraživu tabelu sa svim podacima koji su prikupljeni. Ukoliko želite da pročitate detaljnije izveštaj možete ga naći na sledećoj **web stranici**.  
+
+
+### **Grafikon broja medija koji pružaju sadržaj na jeziku nacionalne manjine** {data-height=500}
+```{r}
+p <- ggplot (data = barminoritymed, aes (x = `Jezik`, y = `Broj_medija`))+
+  
+     geom_col (fill = c("darkred", "darkgreen", "darkblue","darkorange")) +
+  
+     ylab ("Broj medija") +
+  
+     theme (legend.position = "none",
+            
+          panel.background = element_rect (fill = "lightcyan"))
+  
+# Turn it interactive with ggplotly
+
+p <- ggplotly (p)
+
+p
+```
+
+Column {data-width=500}
+-----------------------------------------------------------------------
+### **Mapa sa medijima čiji su osnivači direktno ili indirektno NSNM** 
+
+```{r}
+m<-leaflet(data =combinedlonglat) %>% 
+  addTiles()%>%
+  setView(lng = 21.0059, lat = 44.0165, zoom = 7)%>%
+  addAwesomeMarkers( icon = icon2, popup = ~paste(
+    "Naziv medija:", `Naziv medija`, "<br>","Vrsta medija:",`Vrsta medija`, "<br>",
+    "Jezici:",`Jezik`,`Ostali jezici 1`,`Ostali jezici 2`,`Ostali jezici 3`,`Ostali jezici 4`,`Ostali jezici 5`,"<br>",
+    "Grad:",`Grad`,"<br>"
+  ),
+  clusterOptions = markerClusterOptions()
+  )
+  
+
+m
+```
+
+Tabela
+=============================================
+
+### **Pretraživa tabela sa prikupljenim podacima o manjinskim medijima čiji su osnivači NSNM**
+
+```{r}
+DT :: datatable (minoritymedia, rownames = FALSE,options = list(
+  bPaginate = TRUE))
+```
+
+Podaci
+=============================================
+
+Column {data-width=1000 align=justify}
+-----------------------------------------------------------------------
+
+
+```{r}
+ ui<- mainPanel( p("Objavljivanje ovog istraživanja pomogla je Misija OEBS-a u Srbiji. Stavovi izraženi u ovom istraživanju pripadaju isključivo autoru i ne predstavljaju zvaničan stav Misije OEBS-a u Srbiji."),
+                 p(" Na ovoj stranici možete da skinete prikupljene podatke u .csv i .xlxs formatu klikom na dugme Preuzmi. Takođe, ukoliko mislite da podaci treba da se ažuriraju slobodno kontaktirajte autora na sledeću", a("email adresu.",href="mailto:nedim.sejdinovic@gmail.com"),align="justify"),
+                 
+   downloadButton (outputId = "downloaddatabase", label = "Preuzmi.CSV", class="butt",
+                                   tags$head(tags$style(" .butt{background-color:#0e7ceb;} .butt{color: black;} "))),
+                        
+  downloadButton ("downloaddatabase1", "Preuzmi.XLSX",class = "butt",
+                                   tags$head(tags$style(" .butt{background-color:#0e7ceb;} .butt{color: black;} "))))
+                        
+server <- function (input, output) {output$downloaddatabase <- downloadHandler (
+    filename = function(){paste("ManjinskimedijiNSNM-", Sys.Date(), ".csv",sep = "")},
+    
+    content = function(file) {
+      write.csv(minoritymedia, file)}
+    )
+ output$downloaddatabase1 <- downloadHandler(
+    filename = function(){paste("ManjinskimedijiNSNM-", Sys.Date(), ".xlsx", sep = "")},
+    
+    content = function(file) {
+      write_xlsx(minoritymedia, path = file)}
+    
+  )
+}
+shinyApp(ui,server)
+
+```
+
+![](/Users/jojo/Desktop/R trainings various/Minority media/OSCE.png) 
+
