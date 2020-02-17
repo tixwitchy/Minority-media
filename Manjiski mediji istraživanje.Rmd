@@ -35,6 +35,7 @@ longlat<-longlat%>%
 
 longlat<-add_row(longlat, Grad = "MAGLIĆ", lng = 19.5296,  lat= 45.3528)
 longlat<-add_row(longlat, Grad = "BARAJEVO", lng =20.4524 ,  lat= 44.6035)
+longlat<-add_row(longlat, Grad = "TORAK", lng =20.6466 ,  lat= 45.4913)
 combinedlonglat<-left_join(minoritymedia,longlat,by="Grad")
 combinedlonglat[, 6:10][is.na(combinedlonglat[, 6:10])] <- " "
 
