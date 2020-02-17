@@ -47,16 +47,20 @@ icon2<-awesomeIcons( icon="medium", library="fa", markerColor = "blue")
 
 #bar chart
 
-barminoritymed<-minoritymedia%>%
-  group_by(`Jezik`)%>%
-    summarise(count=n())%>%
+barminoritymed<-minoritymedia%>%distinct(`Naziv medija`, .keep_all = TRUE)%>%
+group_by(`Jezik`)%>%
+   summarise(count=n())%>%
     rename (Broj_medija=count) %>%
   arrange (desc (Broj_medija)) %>%
   top_n(4)
+  
+
+  
+   
 
  barminoritymed$`Jezik` <- factor (barminoritymed$`Jezik`,
   
-                                 levels = c ("Mađarski", "Romski", "Slovački","Albanski"))
+                                 levels = c ("Mađarski","Albanski", "Bosanski", "Romski"))
  
  minoritymedia1<-minoritymedia%>%select(-`URL`)
 ```
@@ -109,7 +113,7 @@ Column {data-width=500}
     "Naziv medija:", `Naziv medija`, "<br>","Vrsta medija:",`Vrsta medija`, "<br>",
     "Jezici:",`Jezik`,`Ostali jezici 1`,`Ostali jezici 2`,`Ostali jezici 3`,`Ostali jezici 4`,`Ostali jezici 5`,"<br>",
     "Grad:",`Grad`,"<br>",
-    "<a href='",`URL`, "' target='_blank'>"
+    "<a href='", `URL`, "' target='_blank'>"
                  , "Više informacija o mediju </a>","<br>"
   ),
   clusterOptions = markerClusterOptions()
