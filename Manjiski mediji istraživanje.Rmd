@@ -71,7 +71,7 @@ Istraživanje
 
 Column {data-width=500}
 -----------------------------------------------------------------------
-### Broj manjinskih medija-osnivači NSNM {data-height=150} 
+### Broj manjinskih medija {data-height=150} 
 ```{r}
 #creation of value box in upper left corner
 valueBox (format (nrow(totalminoritmedia)), icon = "fa-medium")
@@ -79,7 +79,7 @@ valueBox (format (nrow(totalminoritmedia)), icon = "fa-medium")
 
 ### **Mediji na jezicima nacionalnih manjina – istraživanje i analiza** {data-height=350, align=justify}
 
-Predstavljamo vam sažeti pregled podataka prikupljenih tokom istraživanja koje je uradio konsultant Nedim Sejdinović. Podaci pokazuju da postoji trenutno `r nrow(totalminoritmedia)` medija na jezicima nacionalnih manjina čiji su osnivači nacionalni saveti nacionalnih manjina (NSNM). Sa desne strane vam je na raspolaganju mapa sa medijima gde mozete da vidite na kojim sve jezicima pružaju medijski sadržaji i koji tip medija je u pitanju.Ispod je grafikon koji prikazuje koliko medija pokriva određeni jezik. I na kraju imate pretraživu tabelu sa svim podacima koji su prikupljeni. Ukoliko želite da pročitate detaljnije izveštaj možete ga naći na sledećoj **web stranici**.  
+Predstavljamo vam sažeti pregled podataka prikupljenih tokom istraživanja koje je uradio konsultant Nedim Sejdinović. Podaci pokazuju da postoji trenutno `r nrow(totalminoritmedia)` medija na jezicima nacionalnih manjina. Sa desne strane vam je na raspolaganju mapa sa medijima gde mozete da vidite na kojim sve jezicima pružaju medijski sadržaji i koji tip medija je u pitanju.Ispod je grafikon koji prikazuje koliko medija pokriva određeni jezik. I na kraju imate pretraživu tabelu sa svim podacima koji su prikupljeni. Ukoliko želite da pročitate detaljnije izveštaj možete ga naći na sledećoj **web stranici**.  
 
 
 ### **Grafikon prikazuje četiri jezika sa najvećim brojem medija na kojima se pruža sadržaj na tom jeziku** {data-height=500}
@@ -103,7 +103,7 @@ p
 
 Column {data-width=500}
 -----------------------------------------------------------------------
-### **Mapa sa medijima čiji su osnivači direktno ili indirektno NSNM** 
+### **Mapa sa medijima koji pružaju sadržaj na manjinskom jeziku** 
 
 ```{r}
 
@@ -127,7 +127,7 @@ m
 Tabela
 =============================================
 
-### **Pretraživa tabela sa prikupljenim podacima o manjinskim medijima čiji su osnivači NSNM**
+### **Pretraživa tabela sa prikupljenim podacima o manjinskim medijima**
 
 ```{r}
 DT :: datatable (minoritymedia1, rownames = FALSE,options = list(
