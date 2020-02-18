@@ -103,7 +103,7 @@ p
 
 Column {data-width=500}
 -----------------------------------------------------------------------
-### **Mapa sa medijima koji pružaju sadržaj na manjinskom jeziku** 
+### **Mapa sa medijima koji pružaju sadržaj na manjinskim jezicima** 
 
 ```{r}
 
