@@ -46,7 +46,7 @@ combinedlonglat<-combinedlonglat%>%
 
 icon2<-awesomeIcons( icon="medium", library="fa", markerColor = "blue")
 
-#bar chart
+#bar chart za Broj medija po jeziku
 
 barminoritymed<-minoritymedia%>%distinct(`Naziv medija`, .keep_all = TRUE)%>%
 group_by(`Jezik`)%>%
@@ -62,8 +62,12 @@ group_by(`Jezik`)%>%
  barminoritymed$`Jezik` <- factor (barminoritymed$`Jezik`,
   
                                  levels = c ("Mađarski","Albanski", "Bosanski", "Romski"))
+ #tabela 
  
  minoritymedia1<-minoritymedia%>%select(-`URL`)
+ 
+
+ 
 ```
 
 Istraživanje
@@ -74,7 +78,7 @@ Column {data-width=500}
 ### Broj manjinskih medija {data-height=150} 
 ```{r}
 #creation of value box in upper left corner
-valueBox (format (nrow(totalminoritmedia)), icon = "fa-medium")
+valueBox (nrow(totalminoritmedia), icon = "fa-medium")
 ```
 
 ### **Mediji na jezicima nacionalnih manjina – istraživanje i analiza** {data-height=350, align=justify}
@@ -134,19 +138,18 @@ DT :: datatable (minoritymedia1, rownames = FALSE,options = list(
   bPaginate = TRUE))
 ```
 
-Kontakt i podaci
+Dodatne informacije
 =============================================
 
-Column {data-width=1000 align=justify}
+Column {data-width=1000}
 -----------------------------------------------------------------------
+### **Kontakt i podaci** {data-height=1000, align=justify}
 
 Ukoliko smatrate da podaci treba da se ažuriraju slobodno kontaktirajte autora na sledeću email adresu: nedim.sejdinovic@gmail.com. 
 
 Ova stranica je napravljena uz pomoć programskog jezika R i kod za njenu izradu kao i podatke u xls i csv formatu mozete naći na sledećoj [web adresi](https://github.com/tixwitchy/Minority-media).
 
 Objavljivanje ovog istraživanja pomogla je Misija OEBS-a u Srbiji. Stavovi izraženi u ovom istraživanju pripadaju isključivo autoru i ne predstavljaju zvaničan stav Misije OEBS-a u Srbiji.
-
-
 
 
 
