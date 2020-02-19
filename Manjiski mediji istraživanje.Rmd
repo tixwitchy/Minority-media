@@ -44,7 +44,7 @@ combinedlonglat[, 6:10][is.na(combinedlonglat[, 6:10])] <- " "
 combinedlonglat<-combinedlonglat%>%
   distinct(`Naziv medija`,.keep_all = TRUE)
 
-icon2<-awesomeIcons( icon="medium", library="fa", markerColor = "orange")
+icon2<-awesomeIcons( icon="medium", library="fa", markerColor = "purple")
 
 #bar chart za Broj medija po jeziku
 
@@ -90,7 +90,7 @@ Predstavljamo vam sažeti pregled podataka prikupljenih tokom istraživanja koje
 ```{r}
 p <- ggplot (data = barminoritymed, aes (x = `Jezik`, y = `Broj_medija`))+
   
-     geom_col (fill = "darkorange") +
+     geom_col (fill = "#AA23B4") +
   
      ylab ("Broj medija") +
   
