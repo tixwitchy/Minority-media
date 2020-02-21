@@ -1,5 +1,5 @@
 ---
-title: "Mediji na jezicima nacionalnih manjina – istraživanje i analiza"
+title: "Proba:Mediji na jezicima nacionalnih manjina – istraživanje i analiza"
 output: 
   flexdashboard::flex_dashboard:
     orientation: columns
@@ -149,7 +149,7 @@ Ukoliko smatrate da podaci treba da se ažuriraju slobodno kontaktirajte autora 
 
 Ova stranica je napravljena uz pomoć programskog jezika R i kod za njenu izradu kao i podatke u xls i csv formatu mozete naći na sledećoj [web adresi](https://github.com/tixwitchy/Minority-media).
 
-Objavljivanje ovog istraživanja pomogla je Misija OEBS-a u Srbiji. Stavovi izraženi u ovom istraživanju pripadaju isključivo autoru i ne predstavljaju zvaničan stav Misije OEBS-a u Srbiji.
+
 
 
 
