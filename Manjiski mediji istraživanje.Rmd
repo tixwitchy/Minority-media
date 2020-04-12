@@ -48,7 +48,7 @@ icon2<-awesomeIcons( icon="medium", library="fa", markerColor = "purple")
 
 #bar chart za Broj medija po jeziku
 
-barminoritymed<-minoritymedia%>%distinct(`Naziv medija`, .keep_all = TRUE)%>%
+barminoritymed<-minoritymedia%>%
 group_by(`Jezik`)%>%
    summarise(count=n())%>%
     rename (Broj_medija=count) %>%
@@ -60,8 +60,7 @@ group_by(`Jezik`)%>%
    
 
  barminoritymed$`Jezik` <- factor (barminoritymed$`Jezik`,
-  
-                                 levels = c ("Mađarski","Albanski", "Bosanski", "Romski"))
+                               levels = c ("Mađarski", "Romski", "Slovački","Albanski"))
  #tabela 
  
  minoritymedia1<-minoritymedia%>%select(-`URL`)
