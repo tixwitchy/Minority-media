@@ -1,5 +1,5 @@
 ---
-title: "Test verzija:Mediji na jezicima nacionalnih manjina – istraživanje i analiza"
+title: "Mediji na jezicima nacionalnih manjina – istraživanje i analiza"
 output: 
   flexdashboard::flex_dashboard:
     orientation: column
@@ -74,7 +74,7 @@ Istraživanje
 
 Column {data-width=500}
 -----------------------------------------------------------------------
-### Broj manjinskih medija {data-height=150} 
+### Broj medija koji izveštavaju na manjinskim jezicima {data-height=150} 
 ```{r}
 #creation of value box in upper left corner
 valueBox (nrow(totalminoritmedia), icon = "fa-medium")
@@ -82,7 +82,7 @@ valueBox (nrow(totalminoritmedia), icon = "fa-medium")
 
 ### **Mediji na jezicima nacionalnih manjina – istraživanje i analiza** {data-height=350, align=justify}
 
-Predstavljamo vam sažeti pregled podataka prikupljenih tokom istraživanja koje je uradio medijski ekspert Nedim Sejdinović. Podaci pokazuju da postoji trenutno `r nrow(totalminoritmedia)` medija na jezicima nacionalnih manjina. Sa desne strane vam je na raspolaganju mapa sa medijima gde mozete da vidite na kojim sve jezicima pružaju medijski sadržaji i koji tip medija je u pitanju.Ispod je grafikon koji prikazuje koliko medija pokriva određeni jezik. I na kraju imate pretraživu tabelu sa svim podacima koji su prikupljeni. Ukoliko želite da pročitate detaljnije izveštaj možete ga naći na sledećoj **web stranici**.  
+Predstavljamo vam sažeti pregled podataka prikupljenih tokom istraživanja medija na jezicima nacionalnih manjina, koje je izradio medijski ekspert Nedim Sejdinović. Prema podacima do kojih smo došli, trenutno postoji `r nrow(totalminoritmedia)` medija koji izveštavaju (i) na jezicima nacionalnih manjina. U pitanju su mediji kojima su izdavači nacionalni saveti nacionalnih manjina, kao i mediji u privatnom ili vlasništvu organizacije civilnog društva. Sa desne strane vam je na raspolaganju mapa sa medijima, na kojoj možete da vidite  tip medija i na kojim sve jezicima pruža medijske usluge. Ispod je grafikon koji prikazuje koliko medija pokriva određeni jezik. I na kraju imate pretraživu tabelu sa svim podacima koji su prikupljeni. Ukoliko želite da pročitate detaljnije izveštaj, možete ga naći na sledećoj **web stranici**. Najljubaznije vas molimo da uzmete u obzir kompleksnost istraživanja i ukoliko primetite neku grešku ili propust, slobodno kontaktirate [autora](mailto:nedim.sejdinovic@gmail.com).  
 
 
 ### **Grafikon prikazuje četiri jezika sa najvećim brojem medija na kojima se pruža sadržaj na tom jeziku** {data-height=500}
@@ -145,9 +145,8 @@ Dodatne informacije
 
 Column {data-width=1000}
 -----------------------------------------------------------------------
-### **Kontakt i podaci** {data-height=1000, align=justify}
+### **Podaci** {data-height=1000, align=justify}
 
-Ukoliko smatrate da podaci treba da se ažuriraju slobodno kontaktirajte autora na sledeću email adresu: nedim.sejdinovic@gmail.com. 
 
 Ova stranica je napravljena uz pomoć programskog jezika R i kod za njenu izradu kao i podatke u xls i csv formatu mozete naći na sledećoj [web adresi](https://github.com/tixwitchy/Minority-media).
 
