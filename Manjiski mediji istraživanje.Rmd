@@ -1,5 +1,5 @@
 ---
-title: "Mediji na jezicima nacionalnih manjina – istraživanje i analiza"
+title: "Test verzija:Mediji na jezicima nacionalnih manjina – istraživanje i analiza"
 output: 
   flexdashboard::flex_dashboard:
     orientation: column
@@ -44,7 +44,7 @@ combinedlonglat[, 6:10][is.na(combinedlonglat[, 6:10])] <- " "
 combinedlonglat<-combinedlonglat%>%
   distinct(`Naziv medija`,.keep_all = TRUE)
 
-icon2<-awesomeIcons( icon="medium", library="fa", markerColor = "purple")
+icon2<-awesomeIcons( icon="medium", library="fa", markerColor = "blue")
 
 #bar chart za Broj medija po jeziku
 
@@ -89,13 +89,13 @@ Predstavljamo vam sažeti pregled podataka prikupljenih tokom istraživanja medi
 ```{r}
 p <- ggplot (data = barminoritymed, aes (x = `Jezik`, y = `Broj_medija`))+
   
-     geom_col (fill = "#AA23B4") +
+     geom_col (fill = "#2B8DDA") +
   
      ylab ("Broj medija") +
   
      theme (legend.position = "none",
             
-          panel.background = element_rect (fill = "lightcyan"))
+          panel.background = element_blank())
   
 # Turn it interactive with ggplotly
 
