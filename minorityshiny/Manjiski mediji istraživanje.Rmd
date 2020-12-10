@@ -1,0 +1,257 @@
+---
+title: "Mediji na jezicima nacionalnih manjina – istraživanje i analiza"
+runtime:  shiny 
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(readxl)
+library(ggplot2)
+library(plotly)
+library(leaflet)
+library(tidyverse)
+library(htmltools)
+library(htmlwidgets)
+library(kableExtra)
+library(writexl)
+library(shinyWidgets)
+library(shiny)
+
+library(rmarkdown)
+
+
+minoritymedia <- read_xlsx("manjinskimediji.xlsx")
+
+#Number of minority media
+
+totalminoritmedia <- minoritymedia %>% distinct(`Naziv medija`)
+
+nrow(totalminoritmedia)
+
+#za mapu
+
+longlat <- read.csv("Longitude and latitude for cities.csv")
+
+longlat <- longlat %>%
+  
+  select(-X) %>%
+  
+  rename(Grad=city)
+
+longlat <- add_row(longlat, Grad = "MAGLIĆ", lng = 19.5296,  lat = 45.3528)
+
+longlat <- add_row(longlat, Grad = "BARAJEVO", lng = 20.4524 ,  lat= 44.6035)
+
+combinedlonglat <- left_join(minoritymedia, longlat, by = "Grad")
+
+combinedlonglat[, 6:10][is.na(combinedlonglat[, 6:10])] <- " "
+
+minlat <- min(combinedlonglat$lat)
+
+maxlat <- max(combinedlonglat$lat)
+
+minlong <- min(combinedlonglat$lng)
+
+maxlong <- max(combinedlonglat$lng)
+
+combinedlonglat <- combinedlonglat %>%
+  
+  distinct(`Naziv medija`, .keep_all = TRUE)
+
+#adding torak
+
+combinedlonglat[123,14] <- 20.6466
+
+combinedlonglat[123,15] <- 45.4913
+
+icon2 <- awesomeIcons( icon = "medium", library = "fa", markerColor = "blue")
+
+#bar chart
+
+barminoritymed <- minoritymedia %>%
+  
+  group_by(`Jezik`) %>%
+  
+    summarise(count = n()) %>%
+  
+    rename (`Broj medija` = count) %>%
+  
+  arrange (desc (`Broj medija`)) %>%
+  
+  top_n(4) %>%
+  
+  mutate(Info = paste('<br>', "Jezik:", 
+                    
+                    `Jezik`, '<br>',
+                    
+                    "Broj medija:", `Broj medija`, '<br>'))
+                    
+
+```
+
+```{r global, include=FALSE}
+library(flexdashboard)
+library(readxl)
+library(ggplot2)
+library(plotly)
+library(leaflet)
+library(tidyverse)
+library(htmltools)
+library(htmlwidgets)
+library(kableExtra)
+library(writexl)
+library(shinyWidgets)
+library(shiny)
+library(rmarkdown)
+
+minoritymedia <- readxl::read_xlsx("manjinskimediji.xlsx")
+
+tableminoritymedia <- minoritymedia
+
+#kreiranje aktivnog URL za tabelu
+
+tableminoritymedia$URL <- paste0("<a href='", minoritymedia$URL, "' target='_blank'>"
+                 , "Više informacija o mediju </a>")
+```
+
+Istraživanje
+=================================================================
+
+Column {data-width=500}
+-----------------------------------------------------------------------
+### Broj medija koji izveštavaju na manjinskim jezicima {data-height=150} 
+```{r}
+#creation of value box in upper left corner
+valueBox(format (nrow(totalminoritmedia)), icon = "fa-medium")
+```
+
+### **Mediji na jezicima nacionalnih manjina – istraživanje i analiza** {data-height=370, align=justify}
+
+Predstavljamo vam sažeti pregled podataka prikupljenih tokom istraživanja medija na jezicima nacionalnih manjina, koje je izradio medijski ekspert Nedim Sejdinović i [Centar za održive zajednice](https://odrzivezajednice.org/). Prema podacima do kojih smo došli, trenutno postoji `r nrow(totalminoritmedia)` medija koji izveštavaju (i) na jezicima nacionalnih manjina. U pitanju su mediji kojima su izdavači nacionalni saveti nacionalnih manjina, kao i mediji u privatnom ili vlasništvu organizacije civilnog društva. Sa desne strane vam je na raspolaganju mapa sa medijima, na kojoj možete da vidite  tip medija i na kojim sve jezicima pruža medijske usluge. Ispod je grafikon koji prikazuje koliko medija pokriva određeni jezik. I na kraju imate pretraživu tabelu sa svim podacima koji su prikupljeni. Možete da pročitate detaljnije izveštaj na sledećem [**linku**](https://drive.google.com/file/d/1xW8BzCCFth2hBgbLmaRGJ6IoaKiCdVAT/view?ths=true) na srpskom kao i [**verziju**](https://drive.google.com/file/d/1vs3LZ9ST5SJXOwlcVocGltAzhcZZaCOp/view?usp=sharing) na engleskom jeziku. Najljubaznije vas molimo da uzmete u obzir kompleksnost istraživanja i ukoliko primetite neku grešku ili propust, slobodno kontaktirate [**autora**](mailto:nedim.sejdinovic@gmail.com). 
+
+
+### **Grafikon prikazuje četiri jezika sa najvećim brojem medija na kojima se pruža sadržaj na tom jeziku** {data-height=480}
+```{r}
+p <- ggplot (data = barminoritymed, aes (x = reorder(`Jezik`,-`Broj medija`), y = `Broj medija`,label = `Info`))+
+  
+     geom_col (fill = "#2B8DDA") +
+  
+     ylab ("Broj medija") +
+  
+     xlab("Jezik")+
+  
+     theme (legend.position = "none",
+            
+          panel.background = element_blank())
+  
+# Turn it interactive with ggplotly
+
+p <- ggplotly (p, tooltip = "Info")%>%config(displayModeBar = FALSE)
+
+p
+
+```
+
+Column {data-width=500}
+-----------------------------------------------------------------------
+### **Mapa sa medijima koji pružaju sadržaj na manjinskim jezicima** 
+
+```{r}
+renderLeaflet({
+  data1 <- combinedlonglat
+  leaflet(data = data1) %>% 
+  addTiles() %>%
+  setView(lng = 21.0059, lat = 44.0165, zoom = 7) %>%
+  addAwesomeMarkers( icon = icon2, popup =  ~paste(
+    "Naziv medija:", `Naziv medija`, "<br>", "Vrsta medija:",`Vrsta medija`, "<br>",
+    "Jezici:", `Jezik`, `Ostali jezici 1`, `Ostali jezici 2`, `Ostali jezici 3`, `Ostali jezici 4`, `Ostali jezici 5`, "<br>",
+    "Grad:", `Grad`, "<br>",
+    "<a href='", `URL`, "' target='_blank'>"
+                 , "Više informacija o mediju </a>", "<br>"
+  ),
+clusterOptions = markerClusterOptions()
+  )})
+
+
+```
+
+Tabela
+=============================================
+
+### **Pretraživa tabela sa prikupljenim podacima o manjinskim medijima** 
+
+Izaberite željeni medij ili više medija i pritisnite taster Pretraži kako biste videli prikupljene informacije u tabeli.
+```{r}
+
+ui <- mainPanel( 
+  div(style = "display:inline-block;vertical-align:middle;", selectizeInput ("mediiamanj", "Izaberi medij:", unique (c("SVI MEDIJI", sort(tableminoritymedia$`Naziv medija`))), options = list(create = TRUE), selected = "SVI MEDIJI", multiple = TRUE)),
+                div(style = "display:inline-block;vertical-align:middle;", actionBttn (inputId = "go",label = "Pretraži", icon("search"),style = "gradient",size = "sm",color = "primary")),
+              
+              
+               DT:: dataTableOutput ("tabelamanj"))
+       
+server <- function (input, output) {
+         #big table
+         blablaah <- eventReactive (input$go, {if (input$mediiamanj != "SVI MEDIJI") {
+                 datatable2 <- tableminoritymedia %>%
+      filter(`Naziv medija`%in% input$mediiamanj)
+                 
+               
+               datatable2
+                 
+         }else
+                 
+         {tableminoritymedia}
+                 
+                 
+         })
+
+         output$tabelamanj <- DT::renderDataTable ({
+             DT :: datatable (blablaah(), rownames = FALSE,escape = FALSE, options = list(
+  bPaginate = TRUE,dom="tp",language=list(paginate = list(previous = 'PRETHODNI', `next` = 'SLEDEĆI'))),filter = list(position = "top"), selection = "multiple")  
+        })
+}
+         
+shinyApp(ui,server)
+
+```
+
+Podaci
+=============================================
+
+Column {data-width=1000 align=justify}
+-----------------------------------------------------------------------
+### **Preuzimanje podataka**
+Na ovoj stranici možete da skinete prikupljene podatke u .csv i .xlsx formatu klikom na dugme Preuzmi.
+
+```{r}
+ui<- mainPanel( 
+                
+                downloadBttn (outputId = "downloaddatabase", label = "Preuzmi.CSV",style = "gradient",size = "sm"), 
+                
+                downloadBttn ("downloaddatabase1", "Preuzmi.XLSX",style = "gradient",size = "sm"))
+                
+
+server <- function (input, output) {output$downloaddatabase <- downloadHandler (
+  filename = function(){paste("Manjinskimediji-", Sys.Date(), ".csv",sep = "")},
+  
+  content = function(file) {
+    write.csv(minoritymedia, file)}
+)
+output$downloaddatabase1 <- downloadHandler(
+  filename = function(){paste("Manjinskimediji-", Sys.Date(), ".xlsx", sep = "")},
+  
+  content = function(file) {
+    write_xlsx(minoritymedia, path = file)}
+  
+)
+}
+shinyApp(ui,server)
+
+```
+
+
